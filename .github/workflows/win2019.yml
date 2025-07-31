@@ -1,10 +1,10 @@
-name: Windows 2019
+name: Windows RDP Setup
 
 on: workflow_dispatch
 
 jobs:
   build:
-    runs-on: windows-2019
+    runs-on: windows-2022  # <-- ganti ini dari 'windows-2019'
     timeout-minutes: 360
 
     steps:
@@ -19,12 +19,12 @@ jobs:
     - name: Extracting Ngrok File
       run: Expand-Archive ngrok.zip
 
-    - name: Connect to Ngrok.
+    - name: Connect to Ngrok
       run: .\ngrok\ngrok.exe authtoken $Env:NGROK_AUTH_TOKEN
       env:
         NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
 
-    - name: Enabling access to RDP.
+    - name: Enabling access to RDP
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
